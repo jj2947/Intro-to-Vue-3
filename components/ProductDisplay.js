@@ -4,7 +4,7 @@ app.component('product-display', {
             type: Boolean,
             required: true
         },
-        cart:{} 
+        cart: {}
     },
     template:
         /*html*/
@@ -31,6 +31,8 @@ app.component('product-display', {
         <button class="button" :class="{ disabledButton: cart == 0 }":disabled="cart == 0" @click="removeFromCart">Remove Item</button>
       </div>
     </div>
+    <review-list v-if="reviews.length" :reviews="reviews"></review-list>
+    <review-form @review-submitted="addReview"></review-form>
   </div>`,
     data() {
         return {
@@ -42,22 +44,24 @@ app.component('product-display', {
             variants: [
                 { id: 2234, color: 'green', image: './assets/images/socks_green.jpg', quantity: 5 },
                 { id: 2235, color: 'blue', image: './assets/images/socks_blue.jpg', quantity: 0 },
-            ]
+            ],
+            reviews: []
         }
     },
     methods: {
         addToCart() {
             this.variants[this.selectedVariant].quantity--,
-            this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
+                this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
         },
-        // solution
         removeFromCart() {
             this.variants[this.selectedVariant].quantity++,
-          this.$emit('remove-from-cart', this.variants[this.selectedVariant].id)
+                this.$emit('remove-from-cart', this.variants[this.selectedVariant].id)
         },
-        // solution
         updateVariant(index) {
             this.selectedVariant = index
+        },
+        addReview(review) {
+            this.reviews.push(review)
         }
     },
     computed: {
