@@ -3,7 +3,8 @@ app.component('product-display', {
         premium: {
             type: Boolean,
             required: true
-        }
+        },
+        cart:{} 
     },
     template:
         /*html*/
@@ -46,13 +47,15 @@ app.component('product-display', {
     },
     methods: {
         addToCart() {
-            this.cart++
+            this.variants[this.selectedVariant].quantity--,
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
         },
+        // solution
         removeFromCart() {
-            if (this.cart > 0) {
-                this.cart--
-            }
+            this.variants[this.selectedVariant].quantity++,
+          this.$emit('remove-from-cart', this.variants[this.selectedVariant].id)
         },
+        // solution
         updateVariant(index) {
             this.selectedVariant = index
         }
